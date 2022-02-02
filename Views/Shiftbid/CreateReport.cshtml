@@ -1,0 +1,26 @@
+@model Shiftbid.Models.ViewModels.ReportViewModel
+
+@{
+    ViewData["Title"] = "Create Page";
+}
+
+<form asp-action="CreateReport" asp-controller="Shiftbid" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ReportID"/>
+    <input type="hidden" asp-for="DateTimeCreated"/>
+    <div class="mb-3">
+        <label class="form-label" asp-for="ReportName"></label>
+        <div>
+            <input class="form-control" asp-for="ReportName" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="SeniorityFile"></label>
+        <input class="form-control" asp-for="SeniorityFile"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="ShiftFile"></label>
+        <input class="form-control" asp-for="ShiftFile"/>
+    </div>
+    
+    <input class="btn btn-primary" type="submit" />       
+</form>

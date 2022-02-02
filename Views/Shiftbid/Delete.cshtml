@@ -1,0 +1,10 @@
+@model Shiftbid.Models.Report
+
+@{
+    ViewData["Title"] = "Delete Page";
+}
+
+<h4>Are you sure you want to delete "@Model.ReportName" ?</h4>
+<form method="post">
+    <input class="btn btn-danger" type="submit" value="Delete">
+</form>
