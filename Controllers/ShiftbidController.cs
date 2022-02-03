@@ -95,6 +95,8 @@ namespace Shiftbid.Controllers
                 Shift selectedShift = context.Shifts.FirstOrDefault(s => s.ShiftID == selected);
 
                 selectedShift.Email = vm.EmailAddress;
+                Seniority currentSeniority = context.Seniorities.FirstOrDefault(s => s.AgentEmail == vm.EmailAddress);
+                currentSeniority.SeniorityState = SeniorityState.Received;
                 context.SaveChanges();
 
                 return Content("Success");
@@ -316,6 +318,51 @@ namespace Shiftbid.Controllers
 
             string to_email = NextSeniority.AgentEmail;
             Console.WriteLine(link);
+        }
+        public void BackgroundSeniority(Report r)
+        {
+            // Get All Seniorities
+            var Seniorities = context.Seniorities.Where(sen => sen.SeniorityState != SeniorityState.Received);
+            // Check if any of the seniority stat is "sent". If there is, we skip this round
+            if (Seniorities.Any(sen => sen.SeniorityState == SeniorityState.Sent))
+            {
+                Console.WriteLine("Still Waiting Reply");
+            }
+            // if all Seniorities are null, change report status to complete
+            else if (Seniorities == null)
+            {
+                r.Status = Status.Complete;
+                context.SaveChanges();
+            }
+            // If none of the seniority state is "sent" (All state is new), we get the first seniority of the list and send an email to them with the link
+            else
+            {
+                Seniority NextSeniority = Seniorities.First();
+                string host = _httpContextAccessor.HttpContext.Request.Host.Value;
+                string link = $"{host}/Shiftbid/Responses/{r.ReportID}";
+                NextSeniority.SeniorityState = SeniorityState.Sent;
+                context.SaveChanges();
+                Console.WriteLine("Sending the next seniority an email");
+            }
+            // Wait for another round
+        }
+
+        public void RunBackgroundTask()
+        {
+            // Look for working reports
+            var AllWorkingReport = context.Reports.Where(r => r.Status == Status.Working);
+            if (AllWorkingReport == null)
+            {
+                // If All Working reports is null, do nothing
+                return;
+            }
+            else
+            {
+                foreach (var report in AllWorkingReport)
+                {
+                    BackgroundSeniority(report);
+                }
+            }
         }
     }
 }
