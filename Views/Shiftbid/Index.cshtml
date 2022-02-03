@@ -1,4 +1,4 @@
-@model IEnumerable<Shiftbid.Models.Report>
+@model Shiftbid.Models.ViewModels.ShiftbidIndexViewModel
 @{
     ViewData["Title"] = "Shiftbid Index";
 }
@@ -7,6 +7,7 @@
 <br>
 <a class="btn btn-primary" asp-controller="Shiftbid" asp-action="CreateReport">Create</a>
 <hr>
+<h4 class="text-center">New Reports</h4>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
@@ -17,13 +18,59 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var report in Model)
+        @foreach (var report in Model.NewReport)
         {
             <tr>
                 <td>@report.ReportName</td>
                 <td>@report.DateTimeCreated</td>
                 <td><a class="btn btn-danger text-white" asp-controller="Shiftbid" asp-action="Delete" asp-route-id=@report.ReportID>Delete</a></td>
                 <td><a class="btn btn-success text-white" asp-controller="Shiftbid" asp-action="Responses" asp-route-id=@report.ReportID>Run</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr>
+<h4 class="text-center">Working Reports</h4>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Report Name</th>
+            <th scope="col">Date Time Created</th>
+            @* <th scope="col">Delete</th>
+            <th scope="col">Run</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.WorkingReport)
+        {
+            <tr>
+                <td>@report.ReportName</td>
+                <td>@report.DateTimeCreated</td>
+                @* <td><a class="btn btn-danger text-white" asp-controller="Shiftbid" asp-action="Delete" asp-route-id=@report.ReportID>Delete</a></td>
+                <td><a class="btn btn-success text-white" asp-controller="Shiftbid" asp-action="Responses" asp-route-id=@report.ReportID>Run</a></td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+<hr>
+<h4 class="text-center">Completed Reports</h4>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Report Name</th>
+            <th scope="col">Date Time Created</th>
+            <th scope="col">Download</th>
+            @* <th scope="col">Run</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.CompletedReport)
+        {
+            <tr>
+                <td>@report.ReportName</td>
+                <td>@report.DateTimeCreated</td>
+                <td><a class="btn btn-danger text-white" asp-controller="Shiftbid" asp-action="Download" asp-route-id=@report.ReportID>Download</a></td>
+                @* <td><a class="btn btn-success text-white" asp-controller="Shiftbid" asp-action="Responses" asp-route-id=@report.ReportID>Run</a></td> *@
             </tr>
         }
     </tbody>

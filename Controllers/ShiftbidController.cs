@@ -33,8 +33,17 @@ namespace Shiftbid.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var reports = await context.Reports.ToListAsync();
-            return View(reports);
+            ShiftbidIndexViewModel ShiftbidIndexVM = new ShiftbidIndexViewModel();
+
+            var NewReports = await context.Reports.Where(r => r.Status == Status.New).ToListAsync();
+            var WorkingReports = await context.Reports.Where(r => r.Status == Status.Working).ToListAsync();
+            var CompletedReport = await context.Reports.Where(r => r.Status == Status.Complete).ToListAsync();
+
+            ShiftbidIndexVM.NewReport = NewReports;
+            ShiftbidIndexVM.WorkingReport = WorkingReports;
+            ShiftbidIndexVM.CompletedReport = CompletedReport;
+
+            return View(ShiftbidIndexVM);
         }
 
         [HttpGet]
@@ -55,7 +64,8 @@ namespace Shiftbid.Controllers
             {
                 return NotFound();
             }
-
+            report.Status = Status.Working;
+            context.SaveChanges();
             SendEmail(report);
             //var shift = context.Shifts.Where(s => s.Report == report && s.Email == null).ToList();
             var shift = context.Shifts.Where(s => s.Report == report && s.Email == null).Select(s => new SelectListItem()
