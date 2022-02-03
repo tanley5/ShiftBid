@@ -13,9 +13,6 @@ namespace Shiftbid.Data
             : base(options)
         {
         }
-        public DbSet<Report> Reports { get; set; }
-        public DbSet<Seniority> Seniorities { get; set; }
-        public DbSet<Shift> Shifts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +23,17 @@ namespace Shiftbid.Data
                 v => v.ToString(),
                 v => (Status)Enum.Parse(typeof(Status), v)
             );
+            builder
+            .Entity<Seniority>()
+            .Property(sen => sen.SeniorityState)
+            .HasConversion(
+                v => v.ToString(),
+                v => (SeniorityState)Enum.Parse(typeof(SeniorityState), v)
+            );
         }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<Seniority> Seniorities { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+
     }
 }

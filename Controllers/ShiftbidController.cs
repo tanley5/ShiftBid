@@ -148,6 +148,7 @@ namespace Shiftbid.Controllers
                     }
                     sn.Report = report;
                     sn.ReportID = report.ReportID;
+                    sn.SeniorityState = SeniorityState.New;
                     context.Seniorities.Add(sn);
                 }
                 await context.SaveChangesAsync();
