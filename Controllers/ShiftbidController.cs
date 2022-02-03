@@ -288,6 +288,21 @@ namespace Shiftbid.Controllers
             }
         }
 
+        public async Task<IActionResult> ReportRun(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var report = await context.Reports.FirstOrDefaultAsync(r => r.ReportID == id);
+            if (report == null)
+            {
+                return NotFound();
+            }
+            report.Status = Status.Working;
+            context.SaveChanges();
+            return View();
+        }
         public IEnumerable<Seniority> GetSeniorities(Report r)
         {
             var seniorities = context.Seniorities.Where(s => s.ReportID == r.ReportID).ToList();

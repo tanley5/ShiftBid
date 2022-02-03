@@ -14427,6 +14427,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\tanle\\Documents\\asp_projects\\Shiftbid\\Views\\Shiftbid\\ReportRun.cshtml",
+      "TargetPath": "Views\\Shiftbid\\ReportRun.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\tanle\\Documents\\asp_projects\\Shiftbid\\Views\\Shiftbid\\Index.cshtml",
       "TargetPath": "Views\\Shiftbid\\Index.cshtml",
       "FileKind": "mvc"

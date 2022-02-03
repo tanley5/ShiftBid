@@ -117,3 +117,4 @@ C:\Users\tanle\Documents\asp_projects\Shiftbid\bin\Debug\netcoreapp3.1\zh-TW\Han
 C:\Users\tanle\Documents\asp_projects\Shiftbid\bin\Debug\netcoreapp3.1\zh\Hangfire.Core.resources.dll
 C:\Users\tanle\Documents\asp_projects\Shiftbid\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
 C:\Users\tanle\Documents\asp_projects\Shiftbid\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
+C:\Users\tanle\Documents\asp_projects\Shiftbid\obj\Debug\netcoreapp3.1\Razor\Views\Shiftbid\ReportRun.cshtml.g.cs
