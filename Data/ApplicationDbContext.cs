@@ -16,5 +16,16 @@ namespace Shiftbid.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<Seniority> Seniorities { get; set; }
         public DbSet<Shift> Shifts { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder
+            .Entity<Report>()
+            .Property(r => r.Status)
+            .HasConversion(
+                v => v.ToString(),
+                v => (Status)Enum.Parse(typeof(Status), v)
+            );
+        }
     }
 }

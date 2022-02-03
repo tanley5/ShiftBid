@@ -98,7 +98,7 @@ namespace Shiftbid.Controllers
             {
                 // Create and add report object to DB
                 var datetime = DateTime.Now;
-                var report = new Report { ReportName = vm.ReportName, DateTimeCreated = datetime };
+                var report = new Report { ReportName = vm.ReportName, DateTimeCreated = datetime, Status = Status.New };
                 var dbReport = context.Reports.Add(report);
                 context.SaveChanges();
                 // Get Report Object from Context
