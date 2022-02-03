@@ -25,11 +25,13 @@ namespace Shiftbid.Controllers
     {
         private readonly ApplicationDbContext context;
         private IConfiguration Configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ShiftbidController(ApplicationDbContext ctx, IConfiguration _configuration)
+        public ShiftbidController(ApplicationDbContext ctx, IConfiguration _configuration, IHttpContextAccessor httpContextAccessor)
         {
             context = ctx;
             Configuration = _configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> Index()
         {
@@ -308,9 +310,11 @@ namespace Shiftbid.Controllers
         {
             var Seniorities = GetNotAssignedSeniorities(r);
             Seniority NextSeniority = Seniorities.First();
+            string host = _httpContextAccessor.HttpContext.Request.Host.Value;
+            string link = $"{host}/Shiftbid/Responses/{r.ReportID}";
 
             string to_email = NextSeniority.AgentEmail;
-            Console.WriteLine(to_email);
+            Console.WriteLine(link);
         }
     }
 }

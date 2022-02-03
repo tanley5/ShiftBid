@@ -36,8 +36,8 @@
         <tr>
             <th scope="col">Report Name</th>
             <th scope="col">Date Time Created</th>
-            @* <th scope="col">Delete</th>
-            <th scope="col">Run</th> *@
+            <th scope="col">Delete</th>
+            @* <th scope="col">Run</th> *@
         </tr>
     </thead>
     <tbody>
@@ -46,8 +46,8 @@
             <tr>
                 <td>@report.ReportName</td>
                 <td>@report.DateTimeCreated</td>
-                @* <td><a class="btn btn-danger text-white" asp-controller="Shiftbid" asp-action="Delete" asp-route-id=@report.ReportID>Delete</a></td>
-                <td><a class="btn btn-success text-white" asp-controller="Shiftbid" asp-action="Responses" asp-route-id=@report.ReportID>Run</a></td> *@
+                <td><a class="btn btn-danger text-white" asp-controller="Shiftbid" asp-action="Delete" asp-route-id=@report.ReportID>Delete</a></td>
+                @* <td><a class="btn btn-success text-white" asp-controller="Shiftbid" asp-action="Responses" asp-route-id=@report.ReportID>Run</a></td> *@
             </tr>
         }
     </tbody>
