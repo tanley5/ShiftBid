@@ -13,11 +13,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+
+using Hangfire;
+using Hangfire.SqlServer;
 
 using Shiftbid.Models;
 using Shiftbid.Models.ViewModels;
 using Shiftbid.Data;
-using System.Collections.Generic;
+using Shiftbid.Background;
+
 
 namespace Shiftbid.Controllers
 {
@@ -68,8 +73,7 @@ namespace Shiftbid.Controllers
             }
             report.Status = Status.Working;
             context.SaveChanges();
-            SendEmail(report);
-            //var shift = context.Shifts.Where(s => s.Report == report && s.Email == null).ToList();
+
             var shift = context.Shifts.Where(s => s.Report == report && s.Email == null).Select(s => new SelectListItem()
             {
                 Value = s.ShiftID.ToString(),
@@ -82,6 +86,10 @@ namespace Shiftbid.Controllers
             }
             ResponsesViewModel responsesViewModel = new ResponsesViewModel();
             responsesViewModel.Shifts = shift;
+
+            BackgroundJob.Enqueue<Background.Background>((bg) => bg.ProcessBGJob(report.ReportID));
+            //BackgroundSeniority(report);
+            //var jobId = BackgroundJob.Enqueue(() => Console.WriteLine("Fire-and-forget!"));
             return View(responsesViewModel);
         }
         [HttpPost]
@@ -309,59 +317,38 @@ namespace Shiftbid.Controllers
             //Console.WriteLine(UnassignedSeniorities.First().SeniorityNumber);
             return UnassignedSeniorities;
         }
-        public void SendEmail(Report r)
-        {
-            var Seniorities = GetNotAssignedSeniorities(r);
-            Seniority NextSeniority = Seniorities.First();
-            string host = _httpContextAccessor.HttpContext.Request.Host.Value;
-            string link = $"{host}/Shiftbid/Responses/{r.ReportID}";
 
-            string to_email = NextSeniority.AgentEmail;
-            Console.WriteLine(link);
-        }
-        public void BackgroundSeniority(Report r)
+        public async Task BackgroundSeniorityAsync(int rId)
         {
-            // Get All Seniorities
-            var Seniorities = context.Seniorities.Where(sen => sen.SeniorityState != SeniorityState.Received);
-            // Check if any of the seniority stat is "sent". If there is, we skip this round
-            if (Seniorities.Any(sen => sen.SeniorityState == SeniorityState.Sent))
+            var report = await context.Reports.FirstOrDefaultAsync(r => r.ReportID == rId);
+            while (report.Status != Status.Complete)
             {
-                Console.WriteLine("Still Waiting Reply");
-            }
-            // if all Seniorities are null, change report status to complete
-            else if (Seniorities == null)
-            {
-                r.Status = Status.Complete;
-                context.SaveChanges();
-            }
-            // If none of the seniority state is "sent" (All state is new), we get the first seniority of the list and send an email to them with the link
-            else
-            {
-                Seniority NextSeniority = Seniorities.First();
-                string host = _httpContextAccessor.HttpContext.Request.Host.Value;
-                string link = $"{host}/Shiftbid/Responses/{r.ReportID}";
-                NextSeniority.SeniorityState = SeniorityState.Sent;
-                context.SaveChanges();
-                Console.WriteLine("Sending the next seniority an email");
-            }
-            // Wait for another round
-        }
-
-        public void RunBackgroundTask()
-        {
-            // Look for working reports
-            var AllWorkingReport = context.Reports.Where(r => r.Status == Status.Working);
-            if (AllWorkingReport == null)
-            {
-                // If All Working reports is null, do nothing
-                return;
-            }
-            else
-            {
-                foreach (var report in AllWorkingReport)
+                //var Seniorities = context.Seniorities.Where(sen => sen.ReportID == a.ReportID);
+                var Seniorities = context.Seniorities.Where(sen => sen.SeniorityState != SeniorityState.Received && sen.Report == report);
+                // Check if any of the seniority stat is "sent". If there is, we skip this round
+                if (Seniorities.Any(sen => sen.SeniorityState == SeniorityState.Sent))
                 {
-                    BackgroundSeniority(report);
+                    Console.WriteLine("Still Waiting Reply");
+                    Task.Delay(10000).Wait();
                 }
+                // if all Seniorities are null, change report status to complete
+                else if (Seniorities == null)
+                {
+                    report.Status = Status.Complete;
+                    context.SaveChanges(); ;
+                }
+                // If none of the seniority state is "sent" (All state is new), we get the first seniority of the list and send an email to them with the link
+                else
+                {
+                    Seniority NextSeniority = Seniorities.First();
+                    string host = _httpContextAccessor.HttpContext.Request.Host.Value;
+                    string link = $"{host}/Shiftbid/Responses/{report.ReportID}";
+                    NextSeniority.SeniorityState = SeniorityState.Sent;
+                    context.SaveChanges();
+                    Console.WriteLine("Sending the next seniority an email");
+                    Task.Delay(10000).Wait();
+                }
+
             }
         }
     }

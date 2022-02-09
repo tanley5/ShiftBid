@@ -16,6 +16,8 @@ using Microsoft.Extensions.Hosting;
 using Hangfire;
 using Hangfire.SqlServer;
 
+using Shiftbid.Background;
+
 namespace Shiftbid
 {
     public class Startup
@@ -50,6 +52,7 @@ namespace Shiftbid
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
+            services.AddScoped<Background.Background>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -78,8 +81,6 @@ namespace Shiftbid
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
 
             app.UseEndpoints(endpoints =>
             {

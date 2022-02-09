@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pXLX5HTFNd70ANFRFU6jQi69CtbddHUV4gNwC7YfBlcgs3++4AL3H2wb5R2QYrmP9g6BWwuGe1Fz9F6ajDCbnQ==",
+  "dgSpecHash": "UadT8o+IbzBMehV4Scn7u9WCjYcfxr2vG5QDVeuzPenITMYSKKXm5TfTOdJBhlcO8lhnlXGId/Q4de3oMD5dTQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\tanle\\Documents\\asp_projects\\Shiftbid\\Shiftbid.csproj",
   "expectedPackageFiles": [
@@ -48,7 +48,7 @@
     "C:\\Users\\tanle\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\tanle\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\tanle\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\tanle\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\tanle\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\tanle\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\tanle\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\tanle\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
