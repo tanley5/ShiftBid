@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using Shiftbid.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Hangfire;
 using Hangfire.SqlServer;
 
+using Shiftbid.Data;
 using Shiftbid.Background;
+using Shiftbid.Helper;
 
 namespace Shiftbid
 {
@@ -53,6 +54,10 @@ namespace Shiftbid
             // Add the processing server as IHostedService
             services.AddHangfireServer();
             services.AddScoped<Background.Background>();
+
+            // Add Email Services
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
