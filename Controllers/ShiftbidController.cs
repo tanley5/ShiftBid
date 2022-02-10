@@ -88,8 +88,7 @@ namespace Shiftbid.Controllers
             responsesViewModel.Shifts = shift;
 
             BackgroundJob.Enqueue<Background.Background>((bg) => bg.ProcessBGJob(report.ReportID));
-            //BackgroundSeniority(report);
-            //var jobId = BackgroundJob.Enqueue(() => Console.WriteLine("Fire-and-forget!"));
+
             return View(responsesViewModel);
         }
         [HttpPost]
